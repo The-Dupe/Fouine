@@ -1,0 +1,30 @@
+[package]
+name = "fouine-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Moteur d'indexation et de recherche de fichiers (sans interface), compilable en natif et en WebAssembly"
+
+[dependencies]
+memchr = "2"
+regex = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+bincode = "1.3"
+flate2 = { version = "1", default-features = false, features = ["rust_backend"] }
+chrono = { version = "0.4", default-features = false, features = ["std", "clock"] }
+thiserror = "2"
+lz4_flex = { version = "0.11", features = ["frame"] }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+notify = "8"
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61", features = ["Win32_Foundation", "Win32_Security", "Win32_Storage_FileSystem", "Win32_System_IO", "Win32_System_Ioctl"] }
+
+[dev-dependencies]
+criterion = { version = "0.5", default-features = false }
+
+[[bench]]
+name = "search"
+harness = false

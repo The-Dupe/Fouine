@@ -1,0 +1,3 @@
+# Windows : runtime C lie statiquement, pour que fouine.exe n'exige aucune DLL Visual C++ (vcruntime140...).
+[target.'cfg(all(windows, target_env = "msvc"))']
+rustflags = ["-C", "target-feature=+crt-static"]

@@ -1,0 +1,64 @@
+# Version publiee : compile Fouine pour Windows 64 et 32 bits, emballe chaque exe seul dans un zip
+# et publie les zips (et leurs sommes SHA-256) dans une release GitHub.
+# Declenchement MANUEL uniquement (onglet Actions > release > Run workflow), avec le numero de version.
+# La publication habituelle se fait depuis le PC de l'auteur ; ce workflow est une alternative.
+#
+# SIGNATURE : non incluse (voir docs/SIGNATURE.md) ; une etape de signature est a ajouter entre
+# « Compilation » et « Emballage » avant une diffusion large.
+name: release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Numero de version (ex. 0.0.1)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        include:
+          - cible: x86_64-pc-windows-msvc
+            nom: portable-win64
+          - cible: i686-pc-windows-msvc
+            nom: portable-win32
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cible Rust
+        run: rustup target add ${{ matrix.cible }}
+      - name: Compilation
+        run: cargo build --release --locked -p fouine-app --target ${{ matrix.cible }}
+      - name: Emballage (fouine.exe seul)
+        shell: pwsh
+        run: |
+          $v = "${{ inputs.version }}"
+          New-Item -ItemType Directory -Force dist | Out-Null
+          $zip = "dist/Fouine-$v-${{ matrix.nom }}.zip"
+          Compress-Archive -Path "target/${{ matrix.cible }}/release/fouine.exe" -DestinationPath $zip -CompressionLevel Optimal
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.nom }}
+          path: dist/*
+
+  publier:
+    needs: windows
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Sommes SHA-256 (dans le texte de la release, pas en fichier)
+        run: |
+          { echo "Fouine ${{ inputs.version }} : version portable, sans installation. Decompressez le zip et lancez fouine.exe."; echo "portable-win64 : Windows 64 bits ; portable-win32 : Windows 32 bits. Les donnees (index.db, reglages.json, favoris.json) sont creees a cote de fouine.exe : supprimez le dossier pour tout retirer."; echo; echo "Sommes SHA-256 :"; echo; echo '```'; (cd dist && sha256sum *.zip); echo '```'; } > "$RUNNER_TEMP/notes.md"
+      - name: Release GitHub
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.version }}
+          files: dist/*.zip
+          body_path: ${{ runner.temp }}/notes.md

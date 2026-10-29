@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <!-- Variante : la pastille « braise » d'origine (disque orange, coeur plus sombre) -->
+  <circle cx="128" cy="128" r="120" fill="#ffa93a"/>
+  <circle cx="128" cy="128" r="48" fill="#c25a12"/>
+</svg>

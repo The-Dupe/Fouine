@@ -1,0 +1,14 @@
+[workspace]
+resolver = "2"
+members = ["crates/fouine-core", "crates/fouine-app"]
+
+[workspace.package]
+version = "0.0.1"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+opt-level = 3
+strip = true

@@ -1,0 +1,19 @@
+/target
+/dist
+*.db
+*.tmp
+# Mesures locales (chemins de la machine de developpement)
+bench-result.txt
+# Journal d'analyse du logiciel de reference : a publier seulement apres decision du proprietaire
+docs/GHIDRA.md
+
+# Publication locale (compile, zip, envoi) : jamais dans le depot
+publier.cmd
+publier.ps1
+# Scripts de diagnostic ponctuels (hors depot)
+scripts/bissection-dossiers.ps1
+scripts/test-droits-dossier.ps1
+scripts/lancement-explorateur.ps1
+scripts/mesure-arret.ps1
+
+scripts/sonde-everything.ps1

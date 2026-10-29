@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="fond" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3a2416"/>
+      <stop offset="1" stop-color="#150e0a"/>
+    </linearGradient>
+    <linearGradient id="braise" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffc766"/>
+      <stop offset="1" stop-color="#e8651a"/>
+    </linearGradient>
+  </defs>
+  <!-- fond : carre arrondi sombre -->
+  <rect x="8" y="8" width="240" height="240" rx="54" ry="54" fill="url(#fond)"/>
+  <!-- manche de la loupe -->
+  <line x1="158" y1="158" x2="214" y2="214" stroke="url(#braise)" stroke-width="26" stroke-linecap="round"/>
+  <!-- verre -->
+  <circle cx="112" cy="112" r="64" fill="#24160e" stroke="url(#braise)" stroke-width="20"/>
+  <!-- lettre F au centre du verre -->
+  <path d="M88 84 H138 V100 H106 V112 H132 V128 H106 V146 H88 Z" fill="url(#braise)"/>
+  <!-- reflet -->
+  <path d="M68 96 A48 48 0 0 1 96 66" fill="none" stroke="#ffe3b3" stroke-width="6" stroke-linecap="round" opacity="0.7"/>
+</svg>
